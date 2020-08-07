@@ -1,0 +1,23 @@
+{
+  "name": "jxqcDes",
+  "version": "1.0.0",
+  "description": "基于 uni-app & uniCloud 的前后一体登录模板",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victor24680/jxqcUni-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victor24680/jxqcUni-App/issues"
+  },
+  "homepage": "https://github.com/victor24680/jxqcUni-App#readme",
+  "devDependencies": {
+    "@dcloudio/uni-ui": "^1.2.4"
+  }
+}

@@ -46,7 +46,7 @@
 							基金名
 						</t-td>
 						<t-td>
-							<navigator url="../detail/detail">投票详情</navigator>
+							<navigator url="../detail/detail" style="color: #0077cc;">投票详情</navigator>
 						</t-td>
 					</t-tr>
 				</t-table>
