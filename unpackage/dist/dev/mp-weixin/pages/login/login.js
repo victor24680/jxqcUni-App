@@ -163,7 +163,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 27));
-var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | components/m-input */ "components/m-input").then((function () {return resolve(__webpack_require__(/*! ../../components/m-input.vue */ 82));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | components/m-input */ "components/m-input").then((function () {return resolve(__webpack_require__(/*! ../../components/m-input.vue */ 92));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -215,11 +215,11 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
                                             */
       this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
     },
-    bindLogin: function bindLogin() {
+    bindLogin: function bindLogin() {var _this2 = this;
       /**
-                                      * 客户端对账号信息进行一些必要的校验。
-                                      * 实际开发中，根据业务需要进行处理，这里仅做示例。
-                                      */
+                                                         * 客户端对账号信息进行一些必要的校验。
+                                                         * 实际开发中，根据业务需要进行处理，这里仅做示例。
+                                                         */
       if (this.account.length < 5) {
         uni.showToast({
           icon: 'none',
@@ -243,30 +243,62 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
         account: this.account,
         password: this.password };
 
-      var validUser = _service.default.getUsers().some(function (user) {
-        return data.account === user.account && data.password === user.password;
-      });
-      if (validUser) {
-        this.toMain(this.account);
-      } else {
-        uni.showToast({
-          icon: 'none',
-          title: '用户账号或密码错误' });
 
-      }
+      /*
+                                    * 【原有模拟测试登录】
+                                   const validUser = service.getUsers().some(function(user) {
+                                   	console.log(user);
+                                   	return data.account === user.account && data.password === user.password;
+                                   }); */
+
+      /**
+                                           * 登录设置
+                                           * 
+                                           */
+      uni.request({
+        url: 'http://www.jinxqc.com/home/api/login',
+
+        data: data,
+
+        header: {
+          'content-type': 'application/x-www-form-urlencoded' },
+
+
+        method: 'POST',
+
+        success: function success(res) {
+          console.log(res.data);
+          if (res.data.retCode == '00') {
+            _this2.toMain(_this2.account);
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '（服务端）用户账号或密码错误' });
+
+          }
+        } });
+
+
     },
-    oauth: function oauth(value) {var _this2 = this;
+
+    /**
+        * @param {Object} value
+        * 授权第三方登录
+        */
+    oauth: function oauth(value) {var _this3 = this;
       uni.login({
         provider: value,
         success: function success(res) {
           uni.getUserInfo({
             provider: value,
             success: function success(infoRes) {
+              console.log("授权微信登录");
+              console.log(infoRes);
               /**
-                                                 * 实际开发中，获取用户信息后，需要将信息上报至服务端。
-                                                 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
-                                                 */
-              _this2.toMain(infoRes.userInfo.nickName);
+                                     * 实际开发中，获取用户信息后，需要将信息上报至服务端。
+                                     * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
+                                     */
+              _this3.toMain(infoRes.userInfo.nickName);
             },
             fail: function fail() {
               uni.showToast({
@@ -281,6 +313,7 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
         } });
 
     },
+
     getUserInfo: function getUserInfo(_ref)
 
     {var detail = _ref.detail;
@@ -293,7 +326,12 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
 
       }
     },
+    /**
+        * @param {Object} userName龙
+        * 登录之后的跳转
+        */
     toMain: function toMain(userName) {
+      //登录之后：开始跳转
       this.login(userName);
       /**
                              * 强制登录时使用reLaunch方式跳转过来

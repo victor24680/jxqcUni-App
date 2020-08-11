@@ -111,18 +111,48 @@
 					account: this.account,
 					password: this.password
 				};
+
+				/*
+				 * 【原有模拟测试登录】
 				const validUser = service.getUsers().some(function(user) {
+					console.log(user);
 					return data.account === user.account && data.password === user.password;
+				}); */
+				
+				/**
+				 * 登录设置
+				 * 
+				 */
+				uni.request({
+					url: 'http://www.jinxqc.com/home/api/login',
+					
+					data: data,
+					
+					header: {
+						'content-type': 'application/x-www-form-urlencoded'
+					},
+					
+					method: 'POST',
+					
+					success: (res) => {
+						console.log(res.data);
+						if (res.data.retCode == '00') {
+							this.toMain(this.account);
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '（服务端）用户账号或密码错误',
+							});
+						}
+					},
+					
 				});
-				if (validUser) {
-					this.toMain(this.account);
-				} else {
-					uni.showToast({
-						icon: 'none',
-						title: '用户账号或密码错误',
-					});
-				}
 			},
+
+			/**
+			 * @param {Object} value
+			 * 授权第三方登录
+			 */
 			oauth(value) {
 				uni.login({
 					provider: value,
@@ -130,6 +160,8 @@
 						uni.getUserInfo({
 							provider: value,
 							success: (infoRes) => {
+								console.log("授权微信登录")
+								console.log(infoRes);
 								/**
 								 * 实际开发中，获取用户信息后，需要将信息上报至服务端。
 								 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
@@ -149,6 +181,7 @@
 					}
 				});
 			},
+
 			getUserInfo({
 				detail
 			}) {
@@ -161,7 +194,12 @@
 					});
 				}
 			},
+			/**
+			 * @param {Object} userName龙
+			 * 登录之后的跳转
+			 */
 			toMain(userName) {
+				//登录之后：开始跳转
 				this.login(userName);
 				/**
 				 * 强制登录时使用reLaunch方式跳转过来

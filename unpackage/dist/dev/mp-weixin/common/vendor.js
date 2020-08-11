@@ -1720,7 +1720,45 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 115:
+/***/ 12:
+/*!********************************************!*\
+  !*** D:/UniApp/web/jxqcDes/store/index.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 8));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+_vue.default.use(_vuex.default);
+
+var store = new _vuex.default.Store({
+  state: {
+    /**
+            * 是否需要强制登录
+            */
+    forcedLogin: false,
+    hasLogin: true,
+    userName: "" },
+
+  mutations: {
+    login: function login(state, userName) {
+      state.userName = userName || '新用户';
+      state.hasLogin = true;
+    },
+    logout: function logout(state) {
+      state.userName = "";
+      state.hasLogin = false;
+    } } });var _default =
+
+
+
+store;exports.default = _default;
+
+/***/ }),
+
+/***/ 125:
 /*!**********************************************************************!*\
   !*** D:/UniApp/web/jxqcDes/components/uni-ui/lib/uni-icons/icons.js ***!
   \**********************************************************************/
@@ -1859,44 +1897,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   "cloud-download-filled": "\uE8E9",
   "headphones": "\uE8BF",
   "shop": "\uE609" };exports.default = _default;
-
-/***/ }),
-
-/***/ 12:
-/*!********************************************!*\
-  !*** D:/UniApp/web/jxqcDes/store/index.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 8));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-_vue.default.use(_vuex.default);
-
-var store = new _vuex.default.Store({
-  state: {
-    /**
-            * 是否需要强制登录
-            */
-    forcedLogin: false,
-    hasLogin: false,
-    userName: "" },
-
-  mutations: {
-    login: function login(state, userName) {
-      state.userName = userName || '新用户';
-      state.hasLogin = true;
-    },
-    logout: function logout(state) {
-      state.userName = "";
-      state.hasLogin = false;
-    } } });var _default =
-
-
-
-store;exports.default = _default;
 
 /***/ }),
 
@@ -7952,6 +7952,7 @@ var STATE_KEY = 'STATE_KEY';
 var getUsers = function getUsers() {
   var ret = '';
   ret = uni.getStorageSync(USERS_KEY);
+  console.log(ret);
   if (!ret) {
     ret = '[]';
   }
@@ -7959,7 +7960,10 @@ var getUsers = function getUsers() {
 };
 
 var addUser = function addUser(userInfo) {
-  var users = getUsers();
+
+  var boolen = false;
+
+  //前端写入注册的数据
   users.push({
     account: userInfo.account,
     password: userInfo.password,
@@ -7969,7 +7973,9 @@ var addUser = function addUser(userInfo) {
 
 
   uni.request({
-    url: 'http://www.modeljxqc.com/home/api/login',
+
+    url: 'http://www.modeljxqc.com/home/api/reg',
+
     data: {
       account: userInfo.account,
       password: userInfo.password,
@@ -7977,16 +7983,39 @@ var addUser = function addUser(userInfo) {
       real_name: userInfo.real_name,
       id_card: userInfo.id_card },
 
+
     header: {
-      'content-type': 'application/json' },
+      'content-type': 'application/x-www-form-urlencoded' },
+
+
+    method: 'POST',
 
     success: function success(res) {
-      console.log(res.data);
+      if (res.data.retCode == '00') {
+
+        uni.showToast({
+          title: '注册成功' });
+
+
+        uni.navigateBack({
+          delta: 1 });
+
+
+      } else {
+
+        uni.showToast({
+          title: '注册失败' });
+
+
+      }
+
     } });
 
 
-  console.log(users);
-  uni.setStorageSync(USERS_KEY, JSON.stringify(users));
+
+  //本地缓存数据
+  //uni.setStorageSync(USERS_KEY, JSON.stringify(users));
+  return boolen;
 };var _default =
 
 {

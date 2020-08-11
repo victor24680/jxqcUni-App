@@ -1,6 +1,8 @@
 {
   "usingComponents": {
+    "cmd-progress": "/components/cmd-progress/cmd-progress",
     "uni-list": "/components/uni-ui/lib/uni-list/uni-list",
-    "uni-list-item": "/components/uni-ui/lib/uni-list-item/uni-list-item"
+    "uni-list-item": "/components/uni-ui/lib/uni-list-item/uni-list-item",
+    "components": "/components/cmd-progress/cmd-progress"
   }
 }

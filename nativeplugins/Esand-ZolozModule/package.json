@@ -1,0 +1,77 @@
+{
+	"name": "Esand-ZolozModule",
+	"id": "Esand-ZolozModule",
+	"version": "1.0.0",
+	"description": "可信身份认证插件",
+	"_dp_type": "nativeplugin",
+	"_dp_nativeplugin": {
+		"android": {
+			"plugins": [{
+				"type": "module",
+				"name": "Esand-ZolozModule",
+				"class": "com.esand.module.zoloz.ZolozModule"
+			}],
+			"dependencies": [
+				"com.zhy:okhttputils:2.6.2"
+			],
+			"integrateType": "aar",
+			"minSdkVersion": 22,
+			"permissions": [
+				"android.permission.ACCESS_NETWORK_STATE",
+				"android.permission.INTERNET",
+				"android.permission.READ_PHONE_STATE",
+				"android.permission.CAMERA"
+			]
+		},
+		 "ios": {
+			"plugins": [
+                {
+                    "type": "module",
+                    "name": "Esand-ZolozModule",
+                    "class": "ZolozModule" 
+                }
+            ],
+			"integrateType": "framework",
+			"frameworks":[
+				"CoreGraphics.framework",
+				"Accelerate.framework",
+				"SystemConfiguration.framework",
+				"AssetsLibrary.framework",
+				"CoreTelephony.framework",
+				"QuartzCore.framework",
+				"CoreFoundation.framework",
+				"CoreLocation.framework",
+				"ImageIO.framework",
+				"CoreMedia.framework",
+				"CoreMotion.framework",
+				"AVFoundation.framework",
+				"WebKit.framework",
+				"libresolv.tbd",
+				"libz.tbd",
+				"libc++.1.tbd",
+				"libc++abi.tbd",
+				"AudioToolbox.framework",
+				"CFNetwork.framework",
+				"MobileCoreServices.framework",
+				"libz.1.2.8.tbd",
+				"AdSupport.framework",
+				"AliyunIdentityManager.framework",
+				"esand_cloud_zoloz.framework",
+				"ZolozModule.framework"
+			],
+			"embedFrameworks": [
+                "AliyunIdentityManager.framework",
+				"esand_cloud_zoloz.framework",
+				"ZolozModule.framework"
+            ],
+			"resources": [
+				"APBToygerFacade.bundle", 
+				"BioAuthEngine.bundle", 
+				"ToygerService.bundle"
+			],
+			"privacies": [
+                "NSCameraUsageDescription"
+            ]
+		}
+	}
+}

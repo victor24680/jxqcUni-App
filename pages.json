@@ -3,7 +3,7 @@
 		{
 			"path": "pages/main/main",
 			"style": {
-				"navigationBarTitleText": "登录模板"
+				"navigationBarTitleText": "我的基金"
 			}
 		}, {
 			"path": "pages/login/login",
@@ -27,6 +27,10 @@
 			}
 		},{
             "path" : "pages/detail/detail",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/vertify/vertify",
             "style" : {}
         }
     ],

@@ -1,0 +1,6 @@
+framework module esand_cloud_zoloz {
+  umbrella header "esand_cloud_zoloz.h"
+
+  export *
+  module * { export * }
+}

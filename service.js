@@ -5,6 +5,7 @@ const STATE_KEY = 'STATE_KEY';
 const getUsers = function() {
 	let ret = '';
 	ret = uni.getStorageSync(USERS_KEY);
+	console.log(ret);
 	if (!ret) {
 		ret = '[]';
 	}
@@ -12,7 +13,10 @@ const getUsers = function() {
 }
 
 const addUser = function(userInfo) {
-	let users = getUsers();
+	
+	let boolen = false;
+	
+	//前端写入注册的数据
 	users.push({
 		account: userInfo.account,
 		password: userInfo.password,
@@ -22,24 +26,49 @@ const addUser = function(userInfo) {
 	});
 
 	uni.request({
-		url: 'http://www.modeljxqc.com/home/api/login',
+
+		url: 'http://www.modeljxqc.com/home/api/reg',
+
 		data: {
 			account: userInfo.account,
 			password: userInfo.password,
 			phone: userInfo.phone,
 			real_name: userInfo.real_name,
-			id_card: userInfo.id_card 
+			id_card: userInfo.id_card
 		},
-		header: {
-			'content-type': 'application/json'
-		},
-		success: (res) => {
-			console.log(res.data);
-		}
-	});
 
-	console.log(users);
-	uni.setStorageSync(USERS_KEY, JSON.stringify(users));
+		header: {
+			'content-type': 'application/x-www-form-urlencoded'
+		},
+		
+		method:'POST',
+		
+		success: (res) => {
+			if (res.data.retCode == '00') {
+				
+				uni.showToast({
+					title: '注册成功'
+				});
+				
+				uni.navigateBack({
+					delta: 1
+				});
+				
+			} else {
+		
+				uni.showToast({
+					title: '注册失败'
+				});
+				
+			}
+			
+		},
+
+	});
+	
+	//本地缓存数据
+	//uni.setStorageSync(USERS_KEY, JSON.stringify(users));
+	return boolen;
 }
 
 export default {

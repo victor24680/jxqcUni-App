@@ -1,23 +1,6 @@
 <template>
 	<view class="content wrap" style="border:none;">
-		<!-- <view v-if="hasLogin" class="hello" style="display: none;">
-			<view class="title">
-				您好 {{userName}}，您已成功登录。
-			</view>
-			<view class="ul">
-				<view>这是 uni-app 带登录模板的示例App首页。</view>
-				<view>在 “我的” 中点击 “退出” 可以 “注销当前账户”</view>
-			</view> 
-			
-		</view> -->
-		<view v-if="!hasLogin" class="hello" style="background-color: #FFFFFF;">
-			<!-- <view class="title">
-				您好 游客。
-			</view>
-			<view class="ul">
-				<view>这是 uni-app 带登录模板的示例App首页。</view>
-				<view>在 “我的” 中点击 “登录” 可以 “登录您的账户”</view>
-			</vie class> -->
+		<view v-if="hasLogin" class="hello" style="display: block;">
 			<view class="box">
 				<t-table style="margin: 0rpx;">
 					<t-tr>
@@ -35,22 +18,32 @@
 							操作
 						</t-th>
 					</t-tr>
-					<t-tr>
+					<t-tr v-for="item in lists">
 						<t-td>
-							基金名
+							{{item.name}}
 						</t-td>
 						<t-td>
-							基金名
+							{{item.date}}
 						</t-td>
 						<t-td>
-							基金名
+							{{item.money}}
 						</t-td>
 						<t-td>
-							<navigator url="../detail/detail" style="color: #0077cc;">投票详情</navigator>
+							<navigator @click="trasferToUrl(item.id)" style="color: #0077cc;">投票详情</navigator>
 						</t-td>
 					</t-tr>
 				</t-table>
 			</view>
+		</view>
+		<view v-if="!hasLogin" class="hello" style="background-color: #FFFFFF;">
+			<!-- <view class="title">
+				您好 游客。
+			</view>
+			<view class="ul">
+				<view>这是 uni-app 带登录模板的示例App首页。</view>
+				<view>在 “我的” 中点击 “登录” 可以 “登录您的账户”</view>
+			</vie class> -->
+
 		</view>
 	</view>
 </template>
@@ -72,18 +65,48 @@
 			tTr,
 			tTd
 		},
-		computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
-		methods: {
-			trasferToUrl() {
-				uni.navigateTo({
-					url:'../detail/vote_detail'
-				})
+		data() {
+			return {
+				lists: []
 			}
 		},
+		mounted: function() {
+			this.getLists();
+		},
+		computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
+		methods: {
+			trasferToUrl(id) {
+				uni.navigateTo({
+					url: '../detail/detail?id=' + id
+				})
+			},
+			getLists() {
+				var self = this;
+				uni.request({
+					url: 'https://www.jinxqc.com/home/api/getList',
+					data: {},
+					header: {
+						'content-type': 'application/x-www-form-urlencoded'
+					},
+					method: 'POST',
+					success: (res) => {
+						console.log(res);
+						if (res.data.retCode == '00') {
+							self.lists = res.data.data;
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '数据请求失败',
+							});
+						}
+					},
+				});
+			}
+		},
+
 		onLoad() {
 			if (!this.hasLogin) {
 				///基金投票列表
-				return true;
 				uni.showModal({
 					title: '未登录',
 					content: '您未登录，需要登录后才能继续',
@@ -110,7 +133,7 @@
 				});
 			}
 		}
-		
+
 	}
 </script>
 
