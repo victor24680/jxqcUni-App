@@ -1,16 +1,13 @@
 <template>
 	
 	<view class="content">
-		<uni-list>
-			
+		<uni-list v-if="hasLogin">
 			<uni-list-item title="人脸认证" show-arrow="false" class="list-shu-style"></uni-list-item>
-			
 			<uni-list-item style="font-size: 14rpx;">
 				<view class="uni-padding-wrap uni-common-mt">
 					<button type="primary" v-on:click="checkVertify" style="background-color: #0077cc;">开 始 认 证</button>
 				</view>
 			</uni-list-item>
-
 		</uni-list>
 		<view class="btn-row">
 			<button v-if="!hasLogin" type="primary" class="primary" @tap="bindLogin">登录</button>

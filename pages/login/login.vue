@@ -118,22 +118,20 @@
 					console.log(user);
 					return data.account === user.account && data.password === user.password;
 				}); */
-				
+
 				/**
 				 * 登录设置
 				 * 
 				 */
 				uni.request({
 					url: 'http://www.jinxqc.com/home/api/login',
-					
+
 					data: data,
-					
+
 					header: {
 						'content-type': 'application/x-www-form-urlencoded'
 					},
-					
 					method: 'POST',
-					
 					success: (res) => {
 						console.log(res.data);
 						if (res.data.retCode == '00') {
@@ -145,41 +143,99 @@
 							});
 						}
 					},
-					
+
 				});
 			},
 
 			/**
 			 * @param {Object} value
 			 * 授权第三方登录
+			 * AppId:wxe7308b0e4f1fd474
+			 * AppSercret:1a32571ee2e78109d3621754ebe713ea
 			 */
 			oauth(value) {
-				uni.login({
-					provider: value,
-					success: (res) => {
-						uni.getUserInfo({
-							provider: value,
-							success: (infoRes) => {
-								console.log("授权微信登录")
-								console.log(infoRes);
-								/**
-								 * 实际开发中，获取用户信息后，需要将信息上报至服务端。
-								 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
-								 */
-								this.toMain(infoRes.userInfo.nickName);
-							},
-							fail() {
-								uni.showToast({
-									icon: 'none',
-									title: '登陆失败'
-								});
-							}
-						});
-					},
-					fail: (err) => {
-						console.error('授权登录失败：' + JSON.stringify(err));
+				//获取oppenID
+				var self_this = this;
+				wx.login({
+					success(response) {
+						if (response.code) {
+							
+							uni.request({
+								url: 'https://www.jinxqc.com/home/api/wxLogin',
+								data: {
+									code: response.code
+								},
+								header: {
+									'content-type': 'application/x-www-form-urlencoded'
+								},
+								method: 'POST',
+								success: (resp) => {
+									console.log(resp);
+									/**
+									 * res.data
+									 * 响应参数
+									 * opppenid 微信登录凭证
+									 * sesssionKey 微信登录凭证
+									 * 
+									 */
+									
+									
+									//获取微信登录头像信息【不能单独作为微信登录授权凭证】
+									//获取微信头像
+									uni.login({
+										provider: value,
+										success: (res) => {
+											uni.getUserInfo({
+												provider: value,
+												success: (infoRes) => {
+													//获取微信openID登录凭证，并业务处理 self_this.toMain(infoRes.userInfo.nickName);
+													console.log('infoRes：');
+													console.log(infoRes);
+													
+													/**
+													 * 传送用户信息和openID至服务进行登录逻辑处理
+													 */
+													uni.request({
+														url: 'http://www.jinxqc.com/home/api/wxDealLogin',
+														data: {
+															code: response.code,
+															nickName:infoRes.userInfo.nickName,
+														},
+														header: {
+															'content-type': 'application/x-www-form-urlencoded'
+														},
+														method: 'POST',
+														success: (resp) => {
+															console.log("resp:");
+															console.log(resp);
+														},
+													});
+													
+												},
+												fail() {
+													uni.showToast({
+														icon: 'none',
+														title: '登陆失败2'
+													});
+												}
+											});
+										},
+										fail: (err) => {
+											console.error('授权登录失败：' + JSON.stringify(err));
+										}
+									});
+									
+								},
+							});
+
+
+
+						} else {
+							console.log('登陆失败！' + response.errMsg);
+						}
 					}
 				});
+
 			},
 
 			getUserInfo({
@@ -199,7 +255,7 @@
 			 * 登录之后的跳转
 			 */
 			toMain(userName) {
-				//登录之后：开始跳转
+				//登录之后：开始跳转【设置全局登录状态】
 				this.login(userName);
 				/**
 				 * 强制登录时使用reLaunch方式跳转过来

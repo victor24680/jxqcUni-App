@@ -193,10 +193,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
 var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 64));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 71));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 78));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 85));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
@@ -210,7 +206,8 @@ var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {_
 
   data: function data() {
     return {
-      lists: [] };
+      lists: [],
+      user_id: '' };
 
   },
   mounted: function mounted() {
@@ -224,9 +221,12 @@ var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {_
 
     },
     getLists: function getLists() {
+      if (!this.hasLogin) {
+        return;
+      }
       var self = this;
       uni.request({
-        url: 'https://www.jinxqc.com/home/api/getList',
+        url: 'http://www.jinxqc.com/home/api/getList',
         data: {},
         header: {
           'content-type': 'application/x-www-form-urlencoded' },
@@ -247,33 +247,40 @@ var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {_
     } },
 
 
-  onLoad: function onLoad() {var _this = this;
+  onLoad: function onLoad(options) {
+    var user_id = options.user_id;
+    if (user_id != undefined && user_id != null && user_id != '') {
+      this.user_id = user_id;
+    }
     if (!this.hasLogin) {
+      uni.navigateTo({
+        url: "../login/login" });
+
       ///基金投票列表
-      uni.showModal({
-        title: '未登录',
-        content: '您未登录，需要登录后才能继续',
-        /**
-                                    * 如果需要强制登录，不显示取消按钮
-                                    */
-        showCancel: !this.forcedLogin,
-        success: function success(res) {
-          if (res.confirm) {
-            /**
-                             * 如果需要强制登录，使用reLaunch方式
-                             */
-            if (_this.forcedLogin) {
-              uni.reLaunch({
-                url: '../login/login' });
-
-            } else {
-              uni.navigateTo({
-                url: '../login/login' });
-
-            }
-          }
-        } });
-
+      // uni.showModal({
+      // 	title: '未登录',
+      // 	content: '您未登录，需要登录后才能继续',
+      // 	/**
+      // 	 * 如果需要强制登录，不显示取消按钮
+      // 	 */
+      // 	showCancel: !this.forcedLogin,
+      // 	success: (res) => {
+      // 		if (res.confirm) {
+      // 			/**
+      // 			 * 如果需要强制登录，使用reLaunch方式
+      // 			 */
+      // 			if (this.forcedLogin) {
+      // 				uni.reLaunch({
+      // 					url: '../login/login'
+      // 				});
+      // 			} else {
+      // 				uni.navigateTo({
+      // 					url: '../login/login'
+      // 				});
+      // 			}
+      // 		}
+      // 	}
+      // });
     }
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

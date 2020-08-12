@@ -36,14 +36,10 @@
 			</view>
 		</view>
 		<view v-if="!hasLogin" class="hello" style="background-color: #FFFFFF;">
-			<!-- <view class="title">
-				您好 游客。
+			<view style="margin-top: 50rpx;text-align: center;">
+				<text style="float: left;margin-left: 150rpx;">您还未登陆，请点击</text> 
+				<navigator :url="'../login/login'" style="color: #007AFF;float: left;">登陆</navigator>
 			</view>
-			<view class="ul">
-				<view>这是 uni-app 带登录模板的示例App首页。</view>
-				<view>在 “我的” 中点击 “登录” 可以 “登录您的账户”</view>
-			</vie class> -->
-
 		</view>
 	</view>
 </template>
@@ -67,7 +63,8 @@
 		},
 		data() {
 			return {
-				lists: []
+				lists: [],
+				user_id: '',
 			}
 		},
 		mounted: function() {
@@ -81,9 +78,12 @@
 				})
 			},
 			getLists() {
+				if(!this.hasLogin){
+					return;
+				}
 				var self = this;
 				uni.request({
-					url: 'https://www.jinxqc.com/home/api/getList',
+					url: 'http://www.jinxqc.com/home/api/getList',
 					data: {},
 					header: {
 						'content-type': 'application/x-www-form-urlencoded'
@@ -104,33 +104,40 @@
 			}
 		},
 
-		onLoad() {
+		onLoad(options) {
+			const user_id=options.user_id;
+			if(user_id != undefined && user_id != null && user_id != '') {
+				this.user_id = user_id;
+			}
 			if (!this.hasLogin) {
-				///基金投票列表
-				uni.showModal({
-					title: '未登录',
-					content: '您未登录，需要登录后才能继续',
-					/**
-					 * 如果需要强制登录，不显示取消按钮
-					 */
-					showCancel: !this.forcedLogin,
-					success: (res) => {
-						if (res.confirm) {
-							/**
-							 * 如果需要强制登录，使用reLaunch方式
-							 */
-							if (this.forcedLogin) {
-								uni.reLaunch({
-									url: '../login/login'
-								});
-							} else {
-								uni.navigateTo({
-									url: '../login/login'
-								});
-							}
-						}
-					}
+				uni.navigateTo({
+					url:"../login/login",
 				});
+				///基金投票列表
+				// uni.showModal({
+				// 	title: '未登录',
+				// 	content: '您未登录，需要登录后才能继续',
+				// 	/**
+				// 	 * 如果需要强制登录，不显示取消按钮
+				// 	 */
+				// 	showCancel: !this.forcedLogin,
+				// 	success: (res) => {
+				// 		if (res.confirm) {
+				// 			/**
+				// 			 * 如果需要强制登录，使用reLaunch方式
+				// 			 */
+				// 			if (this.forcedLogin) {
+				// 				uni.reLaunch({
+				// 					url: '../login/login'
+				// 				});
+				// 			} else {
+				// 				uni.navigateTo({
+				// 					url: '../login/login'
+				// 				});
+				// 			}
+				// 		}
+				// 	}
+				// });
 			}
 		}
 

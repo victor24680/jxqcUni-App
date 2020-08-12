@@ -13,14 +13,6 @@
 				<text class="title">手机号：</text>
 				<m-input type="text" clearable v-model="phone" placeholder="请输入申购人手机号"></m-input>
 			</view>
-			<view class="input-row border">
-				<text class="title">姓&nbsp;&nbsp;名：</text>
-				<m-input type="text" clearable v-model="real_name" placeholder="请输入申购人姓名"></m-input>
-			</view>
-			<view class="input-row">
-				<text class="title">身份证：</text>
-				<m-input type="text" clearable v-model="id_card" placeholder="请输入申购人身份证号"></m-input>
-			</view>
 		</view>
 		<view class="btn-row">
 			<button type="primary" class="primary" @tap="register">注册</button>
@@ -41,8 +33,6 @@
 				account: '',
 				password: '',
 				phone: '',
-				real_name: '',
-				id_card: ''
 			}
 		},
 		methods: {
@@ -93,8 +83,6 @@
 					account: this.account,
 					password: this.password,
 					phone: this.phone,
-					real_name: this.real_name,
-					id_card: this.id_card
 				}
 				service.addUser(data);
 				/* uni.showToast({

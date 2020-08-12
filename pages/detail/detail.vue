@@ -2,8 +2,7 @@
 	<view class="content wrap">
 		<view class="hello" style="background-color: #FFFFFF;">
 			<uni-list>
-				<uni-list-item title="产品名称" show-arrow="false" class="list-shu-style">
-				</uni-list-item>
+				<uni-list-item title="产品名称" show-arrow="false" class="list-shu-style"></uni-list-item>
 				<uni-list-item style="font-size: 14px;">{{detail.name}}</uni-list-item>
 
 				<uni-list-item title="申购金额" show-arrow="false" class="list-shu-style"></uni-list-item>
@@ -22,8 +21,7 @@
 							<!--radio-group-->
 							<radio-group @change="radioChange">
 								<label class="radio" v-for="(item,index) in items" :key="item.value">
-									<radio :value="item.value" color="#0FAEFF" :checked="index === current" style="margin-left: 30rpx;" @click="radioChange"
-									 style="" />{{item.name}}
+									<radio :value="item.value" color="#0FAEFF" :checked="index === current" style="margin-left: 30rpx;" @click="radioChange" />{{item.name}}
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								</label>
 							</radio-group>
@@ -31,9 +29,7 @@
 					</view>
 				</uni-list-item>
 
-				<uni-list-item title="投票结果" show-arrow="false" class="list-shu-style">
-
-				</uni-list-item>
+				<uni-list-item title="投票结果" show-arrow="false" class="list-shu-style"></uni-list-item>
 
 				<uni-list-item>
 					<text>已投票</text>
@@ -43,13 +39,11 @@
 						<text>{{item_progress.name}}</text>
 						<cmd-progress :percent="item_progress.vote_result" :stroke-width="24" style="margin-top: 5rpx;" ></cmd-progress>
 					</view>
-					
-					
 				</uni-list-item>
 
 				<view style="margin-top: 50rpx;margin-bottom: 210rpx;" v-if="is_show_vote == 1">
 					<view class="uni-padding-wrap uni-common-mt">
-						<button type="primary" v-on:click="confirmVote" style="background-color: #00AAEE;">确 认 投 票</button>
+						<button type="primary" @click="confirmVote" style="background-color: #00AAEE;">确 认 投 票</button>
 					</view>
 				</view>
 				
@@ -106,7 +100,7 @@
 				 * 
 				 */
 				uni.request({
-					url: 'http://www.modeljxqc.com/home/api/votePost',
+					url: 'http://www.jinxqc.com/home/api/votePost',
 					data: {
 						current_id: current_id,
 						select_value: select_value

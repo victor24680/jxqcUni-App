@@ -43,20 +43,22 @@
             /* ios打包配置 */
             "ios" : {},
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         },
         "nativePlugins" : {
-            "PP-BaiduFace" : {
+            "Esand-ZolozModule" : {
                 "__plugin_info__" : {
-                    "name" : "【88特价助力复工】双端百度人脸采集、活体检测  免费支持 - [试用版，仅用于自定义调试基座]",
-                    "description" : "【88特价助力复工】百度人脸采集 活体识别 双端、 前后摄   联系作者免费协助 另有本地版插件提供",
+                    "name" : "Esand-ZolozModule",
+                    "description" : "可信身份认证插件",
                     "platforms" : "Android,iOS",
-                    "url" : "https://ext.dcloud.net.cn/plugin?id=800",
+                    "url" : "",
                     "android_package_name" : "",
                     "ios_bundle_id" : "",
-                    "isCloud" : true,
-                    "bought" : 0,
-                    "pid" : "800",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
                     "parameters" : {}
                 }
             }

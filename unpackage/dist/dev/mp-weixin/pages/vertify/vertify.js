@@ -164,31 +164,43 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     subVertify: function subVertify() {
-      var PPFace = uni.requireNativePlugin('PP-BaiduFace');
-      var config = {
-        licenseName: 'idl-license',
-        licenseSuffix: 'face-android', //这里ios 跟 android 应该不一样
-        licenseId: 'ppface-face-android', //这里ios 跟 android 应该不一样
-        liveActionArray: ["Eye", "HeadUp", "HeadDown"],
-        bgColor: "#56445D", //android背景颜色，ios需要修改资源图片完成
-        textColor: "#C5E99B", //文本已经圆框颜色
-        isSound: false, //默认是否开启语音提示 默认值：false
-        AutoClip: true, //自动裁剪用户脸部区域 默认：false
-        isBackCamera: _self.backCamera, //1.43版本加入 启用后置摄像头 默认false
-        hasPic: true // 1.59版本加入 android采集返回拍照（无黑边）原图，ios下个版本加入
-      };
+      var ZolozModule = uni.requireNativePlugin("Esand-ZolozModule");
+      ZolozModule.zolozAuth({
+        'mCertNo': 430621198910095071,
+        'mCertName': '唐清' },
 
-      //活体识别需要传入动作
-      PPFace.faceliveness(config, function (result) {
-        //result.base64ImageMap 一个动作一张外加一张正面采集
-        //result.base64ImageMap.bestImage0 为默认最佳照片
+      function (ret) {
+        var retJson = JSON.parse(ret);
+        if (retJson.code == 'ZOLOZ_SUCCESS') {
+          var reqJson = JSON.parse(retJson.message);
+          var bizid = reqJson.bizid;
+          var certifyId = reqJson.certifyId;
+          console.log('开始请求阿里云获取结果');
+          uni.request({
+            url: 'https://ediszim.market.alicloudapi.com/zoloz/zim/getResult',
+            method: 'POST',
+            data: {
+              'bizId': bizid,
+              'certifyId': certifyId },
 
-      });
+            header: {
+              'Authorization': 'APPCODE 5c024f7a3b3746fd9b942629959e392b',
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
 
-      //人像采集
-      PPFace.recycler(config, function (result) {
-        //result.base64ImageMap 图像集合 一张
-        //result.originalPic  采集返回拍照（无黑边）原图（目前支持android 后续版本加入ios,需配置 hasPic=true）
+            success: function success(res) {
+              console.log('网络请求成功' + JSON.stringify(res.data));
+              uni.showModal({
+                title: "获取结果成功",
+                content: JSON.stringify(res.data) });
+
+            } });
+
+        } else {
+          uni.showModal({
+            title: "发生错误",
+            content: JSON.stringify(ret) });
+
+        }
       });
     },
     bindLogin: function bindLogin() {

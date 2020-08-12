@@ -1739,7 +1739,7 @@ var store = new _vuex.default.Store({
             * 是否需要强制登录
             */
     forcedLogin: false,
-    hasLogin: true,
+    hasLogin: false,
     userName: "" },
 
   mutations: {
@@ -1758,7 +1758,7 @@ store;exports.default = _default;
 
 /***/ }),
 
-/***/ 125:
+/***/ 132:
 /*!**********************************************************************!*\
   !*** D:/UniApp/web/jxqcDes/components/uni-ui/lib/uni-icons/icons.js ***!
   \**********************************************************************/

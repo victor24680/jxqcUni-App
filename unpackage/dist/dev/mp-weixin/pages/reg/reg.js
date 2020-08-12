@@ -151,14 +151,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 27));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
@@ -181,18 +173,16 @@ var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js *
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | components/m-input */ "components/m-input").then((function () {return resolve(__webpack_require__(/*! ../../components/m-input.vue */ 92));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { components: { mInput: mInput }, data: function data() {return { account: '', password: '', phone: '', real_name: '', id_card: '' };}, methods: { register: function register() {/**
-                                                                                                                                                                                                                                                                                                                                                     * 客户端对账号信息进行一些必要的校验。
-                                                                                                                                                                                                                                                                                                                                                     * 实际开发中，根据业务需要进行处理，这里仅做示例。
-                                                                                                                                                                                                                                                                                                                                                     */if (this.account.length < 5) {uni.showToast({ icon: 'none', title: '账号最短为 5 个字符' });return;}if (this.password.length < 6) {uni.showToast({ icon: 'none', title: '密码最短为 6 个字符' });
+var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | components/m-input */ "components/m-input").then((function () {return resolve(__webpack_require__(/*! ../../components/m-input.vue */ 92));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { components: { mInput: mInput }, data: function data() {return { account: '', password: '', phone: '' };}, methods: { register: function register() {/**
+                                                                                                                                                                                                                                                                                                                         * 客户端对账号信息进行一些必要的校验。
+                                                                                                                                                                                                                                                                                                                         * 实际开发中，根据业务需要进行处理，这里仅做示例。
+                                                                                                                                                                                                                                                                                                                         */if (this.account.length < 5) {uni.showToast({ icon: 'none', title: '账号最短为 5 个字符' });return;
+      }
+
+      if (this.password.length < 6) {
+        uni.showToast({
+          icon: 'none',
+          title: '密码最短为 6 个字符' });
 
         return;
       }
@@ -222,9 +212,7 @@ var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | compo
       var data = {
         account: this.account,
         password: this.password,
-        phone: this.phone,
-        real_name: this.real_name,
-        id_card: this.id_card };
+        phone: this.phone };
 
       _service.default.addUser(data);
       /* uni.showToast({
