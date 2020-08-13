@@ -1,18 +1,17 @@
 <template>
 	<view class="content">
 		<form @submit="formSubmit" @reset="formReset">
-			<view class="input-group" style="text-align: center;width: 100%;font-size: 32rpx;padding-bottom: 10rpx;">
+			<view class="input-group" style="width: 100%;font-size: 32rpx;padding-bottom: 10rpx;">
 
 				<view class="input-row border">
 					<text class="title">姓    名：</text>
-					<m-input class="m-input" type="text"  focus v-model="realname" placeholder="姓名"></m-input>
+					<m-input class="m-input" type="text" clearable focus v-model="realname" placeholder="请输入您的姓名"></m-input>
 				</view>
 				
 				<view class="input-row">
 					<text class="title">身份证：</text>
-					<m-input type="text" v-model="idcard" focus placeholder="身份证"></m-input>
+					<m-input type="text" v-model="idcard" clearable focus placeholder="请输入您的证件号"></m-input>
 				</view>
-	
 			</view>
 			<view class="btn-row">
 				<button type="primary" class="primary" @tap="subVertify">开 始 认 证</button>
@@ -29,7 +28,8 @@
 		},
 		data() {
 			return {
-
+				realname: '',
+				idcard: '',
 			}
 		},
 		methods: {

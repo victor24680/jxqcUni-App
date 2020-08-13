@@ -6,7 +6,8 @@
     "pages/pwd/pwd",
     "pages/user/user",
     "pages/detail/detail",
-    "pages/vertify/vertify"
+    "pages/vertify/vertify",
+    "pages/user/wxbind"
   ],
   "subPackages": [],
   "window": {
@@ -34,5 +35,5 @@
     ]
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap68.json"
+  "sitemapLocation": "sitemap4.json"
 }

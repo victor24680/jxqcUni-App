@@ -33,6 +33,10 @@
             "path" : "pages/vertify/vertify",
             "style" : {}
         }
+        ,{
+            "path" : "pages/user/wxbind",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color": "#7a7e83",

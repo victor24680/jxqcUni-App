@@ -5,13 +5,25 @@
 			<uni-list-item title="人脸认证" show-arrow="false" class="list-shu-style"></uni-list-item>
 			<uni-list-item style="font-size: 14rpx;">
 				<view class="uni-padding-wrap uni-common-mt">
-					<button type="primary" v-on:click="checkVertify" style="background-color: #0077cc;">开 始 认 证</button>
+					<button type="primary" v-on:click="checkVertify" style="background-color: #0FAEFF;">开 始 认 证</button>
 				</view>
 			</uni-list-item>
 		</uni-list>
+		
+		<view v-if="hasLogin" style="margin-top: 30rpx;">
+			<uni-list v-if="user_name === ''" >
+				<uni-list-item title="绑定" show-arrow="false" class="list-shu-style"></uni-list-item>
+				<uni-list-item style="font-size: 14rpx;">
+					<view class="uni-padding-wrap uni-common-mt">
+						<button type="primary" v-on:click="wxBindAuthorize" style="background-color: #0FAEFF;">微 信 绑 定</button>
+					</view>
+				</uni-list-item>
+			</uni-list>
+		</view>
+	
 		<view class="btn-row">
 			<button v-if="!hasLogin" type="primary" class="primary" @tap="bindLogin">登录</button>
-			<button v-if="hasLogin" type="default" @tap="bindLogout">退出登录</button>
+			<button v-if="hasLogin" type="default" @tap="bindLogout" >退出登录</button>
 		</view>
 	</view>
 </template>
@@ -31,7 +43,7 @@
 			uniListItem
 		},
 		computed: {
-			...mapState(['hasLogin', 'forcedLogin'])
+			...mapState(['hasLogin', 'forcedLogin','user_name'])
 		},
 		methods: {
 			...mapMutations(['logout']),
@@ -41,6 +53,7 @@
 				});
 			},
 			bindLogout() {
+				uni.clearStorageSync();
 				this.logout();
 				/**
 				 * 如果需要强制登录跳转回登录页面
@@ -54,6 +67,11 @@
 			checkVertify(){
 				uni.navigateTo({
 					url:'../vertify/vertify'
+				})
+			},
+			wxBindAuthorize:function(){
+				uni.navigateTo({
+					url:'./wxbind'
 				})
 			}
 		}

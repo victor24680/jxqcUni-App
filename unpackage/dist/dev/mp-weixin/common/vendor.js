@@ -862,6 +862,11 @@ function initProperties(props) {var isBehavior = arguments.length > 1 && argumen
       type: String,
       value: '' };
 
+    // 用于字节跳动小程序模拟抽象节点
+    properties.generic = {
+      type: Object,
+      value: null };
+
     properties.vueSlots = { // 小程序不能直接定义 $slots 的 props，所以通过 vueSlots 转换到 $slots
       type: null,
       value: [],
@@ -1160,14 +1165,17 @@ function handleEvent(event) {var _this = this;
             }
             handler.once = true;
           }
-          ret.push(handler.apply(handlerCtx, processEventArgs(
+          var params = processEventArgs(
           _this.$vm,
           event,
           eventArray[1],
           eventArray[2],
           isCustom,
-          methodName)));
-
+          methodName) ||
+          [];
+          // 参数尾部增加原始事件对象用于复杂表达式内获取额外数据
+          // eslint-disable-next-line no-sparse-arrays
+          ret.push(handler.apply(handlerCtx, params.concat([,,,,,,,,,, event])));
         }
       });
     }
@@ -1740,16 +1748,23 @@ var store = new _vuex.default.Store({
             */
     forcedLogin: false,
     hasLogin: false,
-    userName: "" },
+    userName: "",
+    user_name: "" },
 
   mutations: {
     login: function login(state, userName) {
-      state.userName = userName || '新用户';
+      state.userName = userName || '新用户'; //可能为微信昵称和账户名
       state.hasLogin = true;
     },
     logout: function logout(state) {
       state.userName = "";
       state.hasLogin = false;
+    },
+    setUser: function setUser(state, user_name) {
+      /**
+                                                  * 设置用户名全局变量（只能为账户名：不能为微信昵称）
+                                                  */
+      state.user_name = user_name;
     } } });var _default =
 
 
@@ -1758,7 +1773,7 @@ store;exports.default = _default;
 
 /***/ }),
 
-/***/ 132:
+/***/ 140:
 /*!**********************************************************************!*\
   !*** D:/UniApp/web/jxqcDes/components/uni-ui/lib/uni-icons/icons.js ***!
   \**********************************************************************/
@@ -7825,7 +7840,7 @@ function internalMixin(Vue) {
   };
 
   Vue.prototype.__map = function(val, iteratee) {
-    //TODO 暂不考虑 string,number
+    //TODO 暂不考虑 string
     var ret, i, l, keys, key;
     if (Array.isArray(val)) {
       ret = new Array(val.length);
@@ -7839,6 +7854,13 @@ function internalMixin(Vue) {
       for (i = 0, l = keys.length; i < l; i++) {
         key = keys[i];
         ret[key] = iteratee(val[key], key, i);
+      }
+      return ret
+    } else if (typeof val === 'number') {
+      ret = new Array(val);
+      for (i = 0, l = val; i < l; i++) {
+        // 第一个参数暂时仍和小程序一致
+        ret[i] = iteratee(i, i);
       }
       return ret
     }

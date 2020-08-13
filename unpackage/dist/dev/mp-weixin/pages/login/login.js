@@ -163,7 +163,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 27));
-var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | components/m-input */ "components/m-input").then((function () {return resolve(__webpack_require__(/*! ../../components/m-input.vue */ 92));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | components/m-input */ "components/m-input").then((function () {return resolve(__webpack_require__(/*! ../../components/m-input.vue */ 100));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -185,7 +185,7 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
   },
   computed: (0, _vuex.mapState)(['forcedLogin']),
   methods: _objectSpread({},
-  (0, _vuex.mapMutations)(['login']), {
+  (0, _vuex.mapMutations)(['login', 'setUser']), {
     initProvider: function initProvider() {var _this = this;
       var filters = ['weixin', 'qq', 'sinaweibo'];
       uni.getProvider({
@@ -257,17 +257,15 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
                                            */
       uni.request({
         url: 'http://www.jinxqc.com/home/api/login',
-
         data: data,
-
         header: {
           'content-type': 'application/x-www-form-urlencoded' },
 
         method: 'POST',
         success: function success(res) {
-          console.log(res.data);
           if (res.data.retCode == '00') {
             _this2.toMain(_this2.account);
+            _this2.setUser(_this2.account); //设置绑定的账户
           } else {
             uni.showToast({
               icon: 'none',
@@ -301,17 +299,14 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
                 'content-type': 'application/x-www-form-urlencoded' },
 
               method: 'POST',
-              success: function success(resp) {
-                console.log(resp);
+              success: function success(resps) {
                 /**
-                                    * res.data
-                                    * 响应参数
-                                    * opppenid 微信登录凭证
-                                    * sesssionKey 微信登录凭证
-                                    * 
-                                    */
-
-
+                                                 * res.data
+                                                 * 响应参数
+                                                 * openid 微信登录凭证
+                                                 * sessionKey 微信登录凭证
+                                                 * 
+                                                 */
                 //获取微信登录头像信息【不能单独作为微信登录授权凭证】
                 //获取微信头像
                 uni.login({
@@ -321,16 +316,13 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
                       provider: value,
                       success: function success(infoRes) {
                         //获取微信openID登录凭证，并业务处理 self_this.toMain(infoRes.userInfo.nickName);
-                        console.log('infoRes：');
-                        console.log(infoRes);
-
                         /**
-                                               * 传送用户信息和openID至服务进行登录逻辑处理
-                                               */
+                         * 传送用户信息和openID至服务进行登录逻辑处理
+                         */
                         uni.request({
                           url: 'http://www.jinxqc.com/home/api/wxDealLogin',
                           data: {
-                            code: response.code,
+                            openid: resps.data.openid,
                             nickName: infoRes.userInfo.nickName },
 
                           header: {
@@ -338,10 +330,13 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
 
                           method: 'POST',
                           success: function success(resp) {
-                            console.log("resp:");
-                            console.log(resp);
+                            //缓存数据
+                            uni.setStorageSync('OPEN_ID_KEY', resp.data.openid);
+                            if (resp.data.account != "") {
+                              self_this.setUser(resp.data.account); //设置绑定的账户
+                            }
+                            self_this.toMain(infoRes.userInfo.nickName);
                           } });
-
 
                       },
                       fail: function fail() {
@@ -359,14 +354,10 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
 
               } });
 
-
-
-
           } else {
             console.log('登陆失败！' + response.errMsg);
           }
         } });
-
 
     },
 
@@ -382,6 +373,7 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
 
       }
     },
+
     /**
         * @param {Object} userName龙
         * 登录之后的跳转
@@ -389,18 +381,16 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
     toMain: function toMain(userName) {
       //登录之后：开始跳转【设置全局登录状态】
       this.login(userName);
-      /**
-                             * 强制登录时使用reLaunch方式跳转过来
-                             * 返回首页也使用reLaunch方式
-                             */
-      if (this.forcedLogin) {
-        uni.reLaunch({
-          url: '../main/main' });
+      wx.reLaunch({
+        url: '../user/user' });
 
-      } else {
-        uni.navigateBack();
-      }
-
+    },
+    /**
+        * 设置用户名全局变量
+        * 
+        */
+    toUser: function toUser(user_name) {
+      this.setUser(user_name);
     } }),
 
   onReady: function onReady() {

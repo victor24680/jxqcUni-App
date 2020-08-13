@@ -53,7 +53,7 @@
 		},
 		computed: mapState(['forcedLogin']),
 		methods: {
-			...mapMutations(['login']),
+			...mapMutations(['login', 'setUser']),
 			initProvider() {
 				const filters = ['weixin', 'qq', 'sinaweibo'];
 				uni.getProvider({
@@ -125,17 +125,15 @@
 				 */
 				uni.request({
 					url: 'http://www.jinxqc.com/home/api/login',
-
 					data: data,
-
 					header: {
 						'content-type': 'application/x-www-form-urlencoded'
 					},
 					method: 'POST',
 					success: (res) => {
-						console.log(res.data);
 						if (res.data.retCode == '00') {
 							this.toMain(this.account);
+							this.setUser(this.account); //设置绑定的账户
 						} else {
 							uni.showToast({
 								icon: 'none',
@@ -159,7 +157,7 @@
 				wx.login({
 					success(response) {
 						if (response.code) {
-							
+
 							uni.request({
 								url: 'https://www.jinxqc.com/home/api/wxLogin',
 								data: {
@@ -169,17 +167,14 @@
 									'content-type': 'application/x-www-form-urlencoded'
 								},
 								method: 'POST',
-								success: (resp) => {
-									console.log(resp);
+								success: (resps) => {
 									/**
 									 * res.data
 									 * 响应参数
-									 * opppenid 微信登录凭证
-									 * sesssionKey 微信登录凭证
+									 * openid 微信登录凭证
+									 * sessionKey 微信登录凭证
 									 * 
 									 */
-									
-									
 									//获取微信登录头像信息【不能单独作为微信登录授权凭证】
 									//获取微信头像
 									uni.login({
@@ -189,28 +184,28 @@
 												provider: value,
 												success: (infoRes) => {
 													//获取微信openID登录凭证，并业务处理 self_this.toMain(infoRes.userInfo.nickName);
-													console.log('infoRes：');
-													console.log(infoRes);
-													
 													/**
 													 * 传送用户信息和openID至服务进行登录逻辑处理
 													 */
 													uni.request({
 														url: 'http://www.jinxqc.com/home/api/wxDealLogin',
 														data: {
-															code: response.code,
-															nickName:infoRes.userInfo.nickName,
+															openid: resps.data.openid,
+															nickName: infoRes.userInfo.nickName,
 														},
 														header: {
 															'content-type': 'application/x-www-form-urlencoded'
 														},
 														method: 'POST',
 														success: (resp) => {
-															console.log("resp:");
-															console.log(resp);
+															//缓存数据
+															uni.setStorageSync('OPEN_ID_KEY',resp.data.openid);
+															if (resp.data.account != "") {
+																self_this.setUser(resp.data.account); //设置绑定的账户
+															}
+															self_this.toMain(infoRes.userInfo.nickName);
 														},
 													});
-													
 												},
 												fail() {
 													uni.showToast({
@@ -224,18 +219,14 @@
 											console.error('授权登录失败：' + JSON.stringify(err));
 										}
 									});
-									
+
 								},
 							});
-
-
-
 						} else {
 							console.log('登陆失败！' + response.errMsg);
 						}
 					}
 				});
-
 			},
 
 			getUserInfo({
@@ -250,6 +241,7 @@
 					});
 				}
 			},
+
 			/**
 			 * @param {Object} userName龙
 			 * 登录之后的跳转
@@ -257,18 +249,16 @@
 			toMain(userName) {
 				//登录之后：开始跳转【设置全局登录状态】
 				this.login(userName);
-				/**
-				 * 强制登录时使用reLaunch方式跳转过来
-				 * 返回首页也使用reLaunch方式
-				 */
-				if (this.forcedLogin) {
-					uni.reLaunch({
-						url: '../main/main',
-					});
-				} else {
-					uni.navigateBack();
-				}
-
+				wx.reLaunch({
+					url: '../user/user',
+				});
+			},
+			/**
+			 * 设置用户名全局变量
+			 * 
+			 */
+			toUser(user_name) {
+				this.setUser(user_name);
 			}
 		},
 		onReady() {

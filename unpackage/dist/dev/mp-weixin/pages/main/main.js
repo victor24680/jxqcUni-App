@@ -103,7 +103,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   tTable: function() {
-    return __webpack_require__.e(/*! import() | components/t-table/t-table */ "components/t-table/t-table").then(__webpack_require__.bind(null, /*! @/components/t-table/t-table.vue */ 64))
+    return __webpack_require__.e(/*! import() | components/t-table/t-table */ "components/t-table/t-table").then(__webpack_require__.bind(null, /*! @/components/t-table/t-table.vue */ 72))
   }
 }
 var render = function() {
@@ -193,7 +193,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 64));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 71));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 78));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 85));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 72));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 79));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 86));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 93));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -206,14 +206,13 @@ var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {_
 
   data: function data() {
     return {
-      lists: [],
-      user_id: '' };
+      lists: [] };
 
   },
   mounted: function mounted() {
     this.getLists();
   },
-  computed: (0, _vuex.mapState)(['forcedLogin', 'hasLogin', 'userName']),
+  computed: (0, _vuex.mapState)(['forcedLogin', 'hasLogin', 'userName', 'user_name']),
   methods: {
     trasferToUrl: function trasferToUrl(id) {
       uni.navigateTo({
@@ -221,19 +220,40 @@ var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {_
 
     },
     getLists: function getLists() {
+
+      //检测是否已经登录
       if (!this.hasLogin) {
         return;
       }
+
+      if (this.user_name == '') {
+        uni.showModal({
+          title: "提示",
+          content: "微信授权账户未与平台账户绑定",
+          success: function success(res) {
+            if (res.confirm) {
+              wx.reLaunch({
+                url: "../user/user" });
+
+            } else {
+              return;
+            }
+          } });
+
+        return;
+      }
+
       var self = this;
       uni.request({
         url: 'http://www.jinxqc.com/home/api/getList',
-        data: {},
+        data: {
+          user_name: this.user_name },
+
         header: {
           'content-type': 'application/x-www-form-urlencoded' },
 
         method: 'POST',
         success: function success(res) {
-          console.log(res);
           if (res.data.retCode == '00') {
             self.lists = res.data.data;
           } else {
@@ -247,40 +267,11 @@ var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {_
     } },
 
 
-  onLoad: function onLoad(options) {
-    var user_id = options.user_id;
-    if (user_id != undefined && user_id != null && user_id != '') {
-      this.user_id = user_id;
-    }
+  onLoad: function onLoad() {
     if (!this.hasLogin) {
       uni.navigateTo({
         url: "../login/login" });
 
-      ///基金投票列表
-      // uni.showModal({
-      // 	title: '未登录',
-      // 	content: '您未登录，需要登录后才能继续',
-      // 	/**
-      // 	 * 如果需要强制登录，不显示取消按钮
-      // 	 */
-      // 	showCancel: !this.forcedLogin,
-      // 	success: (res) => {
-      // 		if (res.confirm) {
-      // 			/**
-      // 			 * 如果需要强制登录，使用reLaunch方式
-      // 			 */
-      // 			if (this.forcedLogin) {
-      // 				uni.reLaunch({
-      // 					url: '../login/login'
-      // 				});
-      // 			} else {
-      // 				uni.navigateTo({
-      // 					url: '../login/login'
-      // 				});
-      // 			}
-      // 		}
-      // 	}
-      // });
     }
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

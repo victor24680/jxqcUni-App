@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   cmdProgress: function() {
-    return __webpack_require__.e(/*! import() | components/cmd-progress/cmd-progress */ "components/cmd-progress/cmd-progress").then(__webpack_require__.bind(null, /*! @/components/cmd-progress/cmd-progress.vue */ 113))
+    return __webpack_require__.e(/*! import() | components/cmd-progress/cmd-progress */ "components/cmd-progress/cmd-progress").then(__webpack_require__.bind(null, /*! @/components/cmd-progress/cmd-progress.vue */ 121))
   }
 }
 var render = function() {
@@ -134,7 +134,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniList = function uniList() {__webpack_require__.e(/*! require.ensure | components/uni-ui/lib/uni-list/uni-list */ "components/uni-ui/lib/uni-list/uni-list").then((function () {return resolve(__webpack_require__(/*! @/components/uni-ui/lib/uni-list/uni-list.vue */ 99));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniListItem = function uniListItem() {__webpack_require__.e(/*! require.ensure | components/uni-ui/lib/uni-list-item/uni-list-item */ "components/uni-ui/lib/uni-list-item/uni-list-item").then((function () {return resolve(__webpack_require__(/*! @/components/uni-ui/lib/uni-list-item/uni-list-item.vue */ 106));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var cmdProgress = function cmdProgress() {__webpack_require__.e(/*! require.ensure | components/cmd-progress/cmd-progress */ "components/cmd-progress/cmd-progress").then((function () {return resolve(__webpack_require__(/*! @/components/cmd-progress/cmd-progress.vue */ 113));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniList = function uniList() {__webpack_require__.e(/*! require.ensure | components/uni-ui/lib/uni-list/uni-list */ "components/uni-ui/lib/uni-list/uni-list").then((function () {return resolve(__webpack_require__(/*! @/components/uni-ui/lib/uni-list/uni-list.vue */ 107));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniListItem = function uniListItem() {__webpack_require__.e(/*! require.ensure | components/uni-ui/lib/uni-list-item/uni-list-item */ "components/uni-ui/lib/uni-list-item/uni-list-item").then((function () {return resolve(__webpack_require__(/*! @/components/uni-ui/lib/uni-list-item/uni-list-item.vue */ 114));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var cmdProgress = function cmdProgress() {__webpack_require__.e(/*! require.ensure | components/cmd-progress/cmd-progress */ "components/cmd-progress/cmd-progress").then((function () {return resolve(__webpack_require__(/*! @/components/cmd-progress/cmd-progress.vue */ 121));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -227,7 +227,6 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     confirmVote: function confirmVote() {
-      console.log(this.current_value);
       var select_value = this.current_value;
       var current_id = this.current_id;
       var self = this;
@@ -269,13 +268,13 @@ __webpack_require__.r(__webpack_exports__);
     if (id == '' || id == undefined) {
       uni.showToast({
         icon: 'none',
-        title: '页面加载错误' });
+        title: '页面加载错误,找不到产品ID号' });
 
       return;
     };
     var self = this;
     uni.request({
-      url: 'http://www.modeljxqc.com/home/api/getProductDetail',
+      url: 'http://www.jinxqc.com/home/api/getProductDetail',
       data: {
         id: id },
 
@@ -283,7 +282,6 @@ __webpack_require__.r(__webpack_exports__);
         'content-type': 'application/x-www-form-urlencoded' },
 
       success: function success(res) {
-        console.log(res);
         if (res.data.retCode == '00') {
           var data_option = res.data.data;
           self.items = data_option.vote_option;

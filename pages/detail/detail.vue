@@ -91,7 +91,6 @@
 				}
 			},
 			confirmVote: function() {
-				console.log(this.current_value);
 				var select_value = this.current_value;
 				var current_id = this.current_id;
 				var self = this;
@@ -133,13 +132,13 @@
 			if (id == '' || id == undefined) {
 				uni.showToast({
 					icon: 'none',
-					title: '页面加载错误',
+					title: '页面加载错误,找不到产品ID号',
 				});
 				return;
 			};
 			var self = this;
 			uni.request({
-				url: 'http://www.modeljxqc.com/home/api/getProductDetail',
+				url: 'http://www.jinxqc.com/home/api/getProductDetail',
 				data: {
 					id: id
 				},
@@ -147,7 +146,6 @@
 					'content-type': 'application/x-www-form-urlencoded'
 				},
 				success: (res) => {
-					console.log(res);
 					if (res.data.retCode == '00') {
 						var data_option = res.data.data;
 						self.items = data_option.vote_option;
