@@ -32,7 +32,6 @@
 			return {
 				account: '',
 				password: '',
-				phone: '',
 			}
 		},
 		methods: {
@@ -57,40 +56,11 @@
 					return;
 				}
 
-			/* 	if (this.phone.length < 11) {
-					uni.showToast({
-						icon: 'none',
-						title: '手机号不能小于11位'
-					});
-					return;
-				}
-
-				if (this.id_card.length < 18) {
-					uni.showToast({
-						icon: 'none',
-						title: '身份证号不能少于18位'
-					})
-				} */
-				//检测邮箱
-				/* if (this.email.length < 3 || !~this.email.indexOf('@')) {
-					uni.showToast({
-						icon: 'none',
-						title: '邮箱地址不合法'
-					});
-					return;
-				} */
 				const data = {
 					account: this.account,
-					password: this.password,
-					phone: this.phone,
+					password: this.password
 				}
 				service.addUser(data);
-				/* uni.showToast({
-					title: '注册成功'
-				});
-				uni.navigateBack({
-					delta: 1
-				}); */
 			}
 		}
 	}

@@ -11,11 +11,11 @@
 			</view>
 		</view>
 		<view class="btn-row">
-			<button type="primary" class="primary" @tap="bindAuthorize">绑 定</button>
+			<button type="primary" class="primary" @click="bindAuthorize">绑 定</button>
 		</view>
-		<view class="action-row">
+		<!-- <view class="action-row">
 			<navigator url="../reg/reg">注册账号</navigator>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -40,10 +40,13 @@
 		},
 		methods: {
 			...mapMutations(['setUser']),
-			bindAuthorize: function() {
+			bindAuthorize() {
+				console.log('this.openid');
+				console.log(this.openid);
 				if (this.openid == '') {
 					return;
 				}
+				var self_this = this;
 				console.log('this.openid');
 				console.log(this.openid);
 				var self_this = this;

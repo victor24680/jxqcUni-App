@@ -3,26 +3,29 @@
 		<view class="input-group">
 			<view class="input-row border">
 				<text class="title">账户：</text>
-				<m-input class="m-input" type="text" clearable focus v-model="account" placeholder="请输入账号"></m-input>
+				<m-input class="m-input" type="text" clearable focus v-model="account" placeholder="请输入账号或身份证号"></m-input>
 			</view>
 			<view class="input-row">
 				<text class="title">密码：</text>
 				<m-input type="password" displayable v-model="password" placeholder="请输入密码"></m-input>
 			</view>
 		</view>
+		
 		<view class="btn-row">
-			<button type="primary" class="primary" @tap="bindLogin">登录</button>
+			<button type="primary" class="primary"  @click="bindLogin">登录</button>
 		</view>
-		<view class="action-row">
+		
+		<!-- <view class="action-row">
 			<navigator url="../reg/reg">注册账号</navigator>
 			<text>|</text>
 			<navigator url="../pwd/pwd">忘记密码</navigator>
-		</view>
+		</view> -->
 		<view class="oauth-row" v-if="hasProvider" v-bind:style="{top: positionTop + 'px'}">
 			<view class="oauth-image" v-for="provider in providerList" :key="provider.value">
 				<image :src="provider.image" @tap="oauth(provider.value)"></image>
 				<!-- #ifdef MP-WEIXIN -->
-				<button v-if="!isDevtools" open-type="getUserInfo" @getuserinfo="getUserInfo"></button>
+				<!--如果有此按钮，会自动获取下面的中的方法getUserInfo-->
+				<!-- <button v-if="!isDevtools" open-type="getUserInfo" @getuserinfo="getUserInfo"></button> -->
 				<!-- #endif -->
 			</view>
 		</view>
@@ -53,7 +56,7 @@
 		},
 		computed: mapState(['forcedLogin']),
 		methods: {
-			...mapMutations(['login', 'setUser']),
+			...mapMutations(['login', 'setUser','setHasLogin']),
 			initProvider() {
 				const filters = ['weixin', 'qq', 'sinaweibo'];
 				uni.getProvider({
@@ -141,8 +144,8 @@
 							});
 						}
 					},
-
 				});
+				
 			},
 
 			/**
@@ -157,7 +160,7 @@
 				wx.login({
 					success(response) {
 						if (response.code) {
-
+							
 							uni.request({
 								url: 'https://www.jinxqc.com/home/api/wxLogin',
 								data: {
@@ -168,6 +171,7 @@
 								},
 								method: 'POST',
 								success: (resps) => {
+									console.log(resps);
 									/**
 									 * res.data
 									 * 响应参数
@@ -175,63 +179,60 @@
 									 * sessionKey 微信登录凭证
 									 * 
 									 */
+									if (resps.data.retCode == '00') {
+										//缓存数据
+										uni.setStorageSync('OPEN_ID_KEY',resps.data.data.openid);
+										self_this.setHasLogin();
+										self_this.setUser(resps.data.data.account); //设置绑定的账户
+										uni.reLaunch({
+											url:'../user/user'
+										});
+									} else {
+										uni.showToast({
+											title:'登录失败',
+											icon:"none"
+										})
+									}
+									
 									//获取微信登录头像信息【不能单独作为微信登录授权凭证】
 									//获取微信头像
-									uni.login({
-										provider: value,
-										success: (res) => {
-											uni.getUserInfo({
-												provider: value,
-												success: (infoRes) => {
-													//获取微信openID登录凭证，并业务处理 self_this.toMain(infoRes.userInfo.nickName);
-													/**
-													 * 传送用户信息和openID至服务进行登录逻辑处理
-													 */
-													uni.request({
-														url: 'http://www.jinxqc.com/home/api/wxDealLogin',
-														data: {
-															openid: resps.data.openid,
-															nickName: infoRes.userInfo.nickName,
-														},
-														header: {
-															'content-type': 'application/x-www-form-urlencoded'
-														},
-														method: 'POST',
-														success: (resp) => {
-															//缓存数据
-															uni.setStorageSync('OPEN_ID_KEY',resp.data.openid);
-															if (resp.data.account != "") {
-																self_this.setUser(resp.data.account); //设置绑定的账户
-															}
-															self_this.toMain(infoRes.userInfo.nickName);
-														},
-													});
-												},
-												fail() {
-													uni.showToast({
-														icon: 'none',
-														title: '登陆失败2'
-													});
-												}
-											});
-										},
-										fail: (err) => {
-											console.error('授权登录失败：' + JSON.stringify(err));
-										}
-									});
-
+									// uni.login({
+									// 	provider: value,
+									// 	success: (res) => {
+									// 		uni.getUserInfo({
+									// 			provider: value,
+									// 			success: (infoRes) => {
+									// 				//获取微信openID登录凭证，并业务处理 self_this.toMain(infoRes.userInfo.nickName);
+									// 				/**
+									// 				 * 传送用户信息和openID至服务进行登录逻辑处理
+									// 				 */
+													
+									// 			},
+									// 			fail() {
+									// 				uni.showToast({
+									// 					icon: 'none',
+									// 					title: '登陆失败2'
+									// 				});
+									// 			}
+									// 		});
+									// 	},
+									// 	fail: (err) => {
+									// 		console.error('授权登录失败：' + JSON.stringify(err));
+									// 	}
+									// });
+									
+									
 								},
 							});
+							
 						} else {
 							console.log('登陆失败！' + response.errMsg);
 						}
 					}
 				});
 			},
-
-			getUserInfo({
-				detail
-			}) {
+			
+			getUserInfo({detail}) {
 				if (detail.userInfo) {
 					this.toMain(detail.userInfo.nickName);
 				} else {
@@ -241,7 +242,6 @@
 					});
 				}
 			},
-
 			/**
 			 * @param {Object} userName龙
 			 * 登录之后的跳转
@@ -269,6 +269,16 @@
 			// #endif
 		}
 	}
+	
+	// Page({
+	// 	bindTapLogin:function(){
+	// 		wx.showToast({
+	// 			title:"微信提示",
+	// 			icon:"success"
+	// 		})
+	// 	}
+	// })
+	
 </script>
 
 <style>

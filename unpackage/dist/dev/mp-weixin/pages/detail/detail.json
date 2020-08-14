@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "投票详情",
   "usingComponents": {
     "cmd-progress": "/components/cmd-progress/cmd-progress",
     "uni-list": "/components/uni-ui/lib/uni-list/uni-list",

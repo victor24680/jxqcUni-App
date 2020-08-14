@@ -197,9 +197,13 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function ownKeys(object, enumerab
       }
     },
     checkVertify: function checkVertify() {
-      uni.navigateTo({
-        url: '../vertify/vertify' });
+      uni.showToast({
+        title: '暂未接入',
+        icon: "none" });
 
+      // uni.navigateTo({
+      // 	url:'../vertify/vertify'
+      // })
     },
     wxBindAuthorize: function wxBindAuthorize() {
       uni.navigateTo({

@@ -22,6 +22,9 @@ const store = new Vuex.Store({
 			state.userName = "";
 			state.hasLogin = false;
 		},
+		setHasLogin(state,hasLogin) {
+			state.hasLogin = true;
+		},
 		setUser(state,user_name) {
 			/**
 			 * 设置用户名全局变量（只能为账户名：不能为微信昵称）

@@ -77,12 +77,10 @@
 				})
 			},
 			getLists() {
-
 				//检测是否已经登录
 				if (!this.hasLogin) {
 					return;
 				}
-
 				if (this.user_name == '') {
 					uni.showModal({
 						title: "提示",
@@ -99,12 +97,11 @@
 					});
 					return;
 				}
-				
 				var self = this;
 				uni.request({
 					url: 'http://www.jinxqc.com/home/api/getList',
 					data: {
-						user_name: this.user_name
+						account: this.user_name
 					},
 					header: {
 						'content-type': 'application/x-www-form-urlencoded'
@@ -123,7 +120,6 @@
 				});
 			}
 		},
-
 		onLoad() {
 			if (!this.hasLogin) {
 				uni.navigateTo({
@@ -131,7 +127,6 @@
 				});
 			}
 		}
-
 	}
 </script>
 

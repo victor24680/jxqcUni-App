@@ -173,9 +173,12 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function ownKeys(object, enumerab
   methods: _objectSpread({},
   (0, _vuex.mapMutations)(['setUser']), {
     bindAuthorize: function bindAuthorize() {
+      console.log('this.openid');
+      console.log(this.openid);
       if (this.openid == '') {
         return;
       }
+      var self_this = this;
       console.log('this.openid');
       console.log(this.openid);
       var self_this = this;

@@ -1760,6 +1760,9 @@ var store = new _vuex.default.Store({
       state.userName = "";
       state.hasLogin = false;
     },
+    setHasLogin: function setHasLogin(state, hasLogin) {
+      state.hasLogin = true;
+    },
     setUser: function setUser(state, user_name) {
       /**
                                                   * 设置用户名全局变量（只能为账户名：不能为微信昵称）

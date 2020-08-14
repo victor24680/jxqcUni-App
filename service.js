@@ -13,62 +13,39 @@ const getUsers = function() {
 }
 
 const addUser = function(userInfo) {
-	
 	let boolen = false;
-	
 	//前端写入注册的数据
 	users.push({
 		account: userInfo.account,
-		password: userInfo.password,
-		phone: userInfo.phone,
-		real_name: userInfo.real_name,
-		id_card: userInfo.id_card
+		password: userInfo.password
 	});
-
 	uni.request({
-
 		url: 'http://www.modeljxqc.com/home/api/reg',
-
 		data: {
 			account: userInfo.account,
-			password: userInfo.password,
-			phone: userInfo.phone,
-			real_name: userInfo.real_name,
-			id_card: userInfo.id_card
+			password: userInfo.password
 		},
-
 		header: {
 			'content-type': 'application/x-www-form-urlencoded'
 		},
-		
 		method:'POST',
-		
 		success: (res) => {
 			if (res.data.retCode == '00') {
-				
 				uni.showToast({
-					title: '注册成功'
+					title: '注册成功',
+					icon: 'success',
 				});
-				
 				uni.navigateBack({
 					delta: 1
 				});
-				
 			} else {
-		
 				uni.showToast({
 					title: '注册失败'
 				});
-				
 			}
-			
 		},
 
 	});
-	
-	//本地缓存数据
-	//uni.setStorageSync(USERS_KEY, JSON.stringify(users));
-	return boolen;
 }
 
 export default {

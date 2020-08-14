@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "账户绑定",
   "usingComponents": {
     "m-input": "/components/m-input"
   }

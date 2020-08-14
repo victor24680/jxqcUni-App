@@ -162,6 +162,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 27));
 var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | components/m-input */ "components/m-input").then((function () {return resolve(__webpack_require__(/*! ../../components/m-input.vue */ 100));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
@@ -185,7 +186,7 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
   },
   computed: (0, _vuex.mapState)(['forcedLogin']),
   methods: _objectSpread({},
-  (0, _vuex.mapMutations)(['login', 'setUser']), {
+  (0, _vuex.mapMutations)(['login', 'setUser', 'setHasLogin']), {
     initProvider: function initProvider() {var _this = this;
       var filters = ['weixin', 'qq', 'sinaweibo'];
       uni.getProvider({
@@ -300,59 +301,59 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
 
               method: 'POST',
               success: function success(resps) {
+                console.log(resps);
                 /**
-                                                 * res.data
-                                                 * 响应参数
-                                                 * openid 微信登录凭证
-                                                 * sessionKey 微信登录凭证
-                                                 * 
-                                                 */
+                                     * res.data
+                                     * 响应参数
+                                     * openid 微信登录凭证
+                                     * sessionKey 微信登录凭证
+                                     * 
+                                     */
+                if (resps.data.retCode == '00') {
+                  //缓存数据
+                  uni.setStorageSync('OPEN_ID_KEY', resps.data.data.openid);
+                  self_this.setHasLogin();
+                  self_this.setUser(resps.data.data.account); //设置绑定的账户
+                  uni.reLaunch({
+                    url: '../user/user' });
+
+                } else {
+                  uni.showToast({
+                    title: '登录失败',
+                    icon: "none" });
+
+                }
+
                 //获取微信登录头像信息【不能单独作为微信登录授权凭证】
                 //获取微信头像
-                uni.login({
-                  provider: value,
-                  success: function success(res) {
-                    uni.getUserInfo({
-                      provider: value,
-                      success: function success(infoRes) {
-                        //获取微信openID登录凭证，并业务处理 self_this.toMain(infoRes.userInfo.nickName);
-                        /**
-                         * 传送用户信息和openID至服务进行登录逻辑处理
-                         */
-                        uni.request({
-                          url: 'http://www.jinxqc.com/home/api/wxDealLogin',
-                          data: {
-                            openid: resps.data.openid,
-                            nickName: infoRes.userInfo.nickName },
+                // uni.login({
+                // 	provider: value,
+                // 	success: (res) => {
+                // 		uni.getUserInfo({
+                // 			provider: value,
+                // 			success: (infoRes) => {
+                // 				//获取微信openID登录凭证，并业务处理 self_this.toMain(infoRes.userInfo.nickName);
+                // 				/**
+                // 				 * 传送用户信息和openID至服务进行登录逻辑处理
+                // 				 */
 
-                          header: {
-                            'content-type': 'application/x-www-form-urlencoded' },
-
-                          method: 'POST',
-                          success: function success(resp) {
-                            //缓存数据
-                            uni.setStorageSync('OPEN_ID_KEY', resp.data.openid);
-                            if (resp.data.account != "") {
-                              self_this.setUser(resp.data.account); //设置绑定的账户
-                            }
-                            self_this.toMain(infoRes.userInfo.nickName);
-                          } });
-
-                      },
-                      fail: function fail() {
-                        uni.showToast({
-                          icon: 'none',
-                          title: '登陆失败2' });
-
-                      } });
-
-                  },
-                  fail: function fail(err) {
-                    console.error('授权登录失败：' + JSON.stringify(err));
-                  } });
+                // 			},
+                // 			fail() {
+                // 				uni.showToast({
+                // 					icon: 'none',
+                // 					title: '登陆失败2'
+                // 				});
+                // 			}
+                // 		});
+                // 	},
+                // 	fail: (err) => {
+                // 		console.error('授权登录失败：' + JSON.stringify(err));
+                // 	}
+                // });
 
 
               } });
+
 
           } else {
             console.log('登陆失败！' + response.errMsg);
@@ -361,9 +362,7 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
 
     },
 
-    getUserInfo: function getUserInfo(_ref)
-
-    {var detail = _ref.detail;
+    getUserInfo: function getUserInfo(_ref) {var detail = _ref.detail;
       if (detail.userInfo) {
         this.toMain(detail.userInfo.nickName);
       } else {
@@ -373,7 +372,6 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
 
       }
     },
-
     /**
         * @param {Object} userName龙
         * 登录之后的跳转
@@ -399,7 +397,18 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
 
     this.isDevtools = uni.getSystemInfoSync().platform === 'devtools';
 
-  } };exports.default = _default;
+  } };
+
+
+// Page({
+// 	bindTapLogin:function(){
+// 		wx.showToast({
+// 			title:"微信提示",
+// 			icon:"success"
+// 		})
+// 	}
+// })
+exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

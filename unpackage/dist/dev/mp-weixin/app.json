@@ -22,18 +22,17 @@
     "list": [
       {
         "pagePath": "pages/main/main",
-        "text": "首页",
+        "text": "投票列表",
         "iconPath": "static/img/home.png",
         "selectedIconPath": "static/img/homeHL.png"
       },
       {
         "pagePath": "pages/user/user",
-        "text": "我的",
+        "text": "账户中心",
         "iconPath": "static/img/user.png",
         "selectedIconPath": "static/img/userHL.png"
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap4.json"
+  "usingComponents": {}
 }
