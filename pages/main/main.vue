@@ -5,13 +5,10 @@
 				<t-table style="margin: 0rpx;">
 					<t-tr>
 						<t-th>
-							基金名
+							产品名称
 						</t-th>
 						<t-th>
-							日期
-						</t-th>
-						<t-th>
-							金额
+							金额（万）
 						</t-th>
 
 						<t-th>
@@ -21,9 +18,6 @@
 					<t-tr v-for="item in lists">
 						<t-td>
 							{{item.name}}
-						</t-td>
-						<t-td>
-							{{item.date}}
 						</t-td>
 						<t-td>
 							{{item.money}}

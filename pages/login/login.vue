@@ -3,7 +3,7 @@
 		<view class="input-group">
 			<view class="input-row border">
 				<text class="title">账户：</text>
-				<m-input class="m-input" type="text" clearable focus v-model="account" placeholder="请输入账号或身份证号"></m-input>
+				<m-input class="m-input" type="text" clearable focus v-model="account" placeholder="请输入会员ID号或身份证号"></m-input>
 			</view>
 			<view class="input-row">
 				<text class="title">密码：</text>
@@ -140,7 +140,7 @@
 						} else {
 							uni.showToast({
 								icon: 'none',
-								title: '（服务端）用户账号或密码错误',
+								title: res.data.msg,
 							});
 						}
 					},

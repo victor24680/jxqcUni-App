@@ -173,11 +173,10 @@ var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js *
 //
 //
 //
-var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | components/m-input */ "components/m-input").then((function () {return resolve(__webpack_require__(/*! ../../components/m-input.vue */ 100));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { components: { mInput: mInput }, data: function data() {return { account: '', password: '', phone: '' };}, methods: { register: function register() {/**
-                                                                                                                                                                                                                                                                                                                         * 客户端对账号信息进行一些必要的校验。
-                                                                                                                                                                                                                                                                                                                         * 实际开发中，根据业务需要进行处理，这里仅做示例。
-                                                                                                                                                                                                                                                                                                                         */if (this.account.length < 5) {uni.showToast({ icon: 'none', title: '账号最短为 5 个字符' });return;
-      }
+var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | components/m-input */ "components/m-input").then((function () {return resolve(__webpack_require__(/*! ../../components/m-input.vue */ 100));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { components: { mInput: mInput }, data: function data() {return { account: '', password: '' };}, methods: { register: function register() {/**
+                                                                                                                                                                                                                                                                                                              * 客户端对账号信息进行一些必要的校验。
+                                                                                                                                                                                                                                                                                                              * 实际开发中，根据业务需要进行处理，这里仅做示例。
+                                                                                                                                                                                                                                                                                                              */if (this.account.length < 5) {uni.showToast({ icon: 'none', title: '账号最短为 5 个字符' });return;}
 
       if (this.password.length < 6) {
         uni.showToast({
@@ -187,40 +186,11 @@ var mInput = function mInput() {__webpack_require__.e(/*! require.ensure | compo
         return;
       }
 
-      /* 	if (this.phone.length < 11) {
-        		uni.showToast({
-        			icon: 'none',
-        			title: '手机号不能小于11位'
-        		});
-        		return;
-        	}
-        		if (this.id_card.length < 18) {
-        		uni.showToast({
-        			icon: 'none',
-        			title: '身份证号不能少于18位'
-        		})
-        	} */
-
-      //检测邮箱
-      /* if (this.email.length < 3 || !~this.email.indexOf('@')) {
-      	uni.showToast({
-      		icon: 'none',
-      		title: '邮箱地址不合法'
-      	});
-      	return;
-      } */
       var data = {
         account: this.account,
-        password: this.password,
-        phone: this.phone };
+        password: this.password };
 
       _service.default.addUser(data);
-      /* uni.showToast({
-                                      	title: '注册成功'
-                                      });
-                                      uni.navigateBack({
-                                      	delta: 1
-                                      }); */
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

@@ -187,12 +187,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
 var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 72));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 79));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 86));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 93));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
@@ -220,12 +214,10 @@ var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {_
 
     },
     getLists: function getLists() {
-
       //检测是否已经登录
       if (!this.hasLogin) {
         return;
       }
-
       if (this.user_name == '') {
         uni.showModal({
           title: "提示",
@@ -242,12 +234,11 @@ var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {_
 
         return;
       }
-
       var self = this;
       uni.request({
         url: 'http://www.jinxqc.com/home/api/getList',
         data: {
-          user_name: this.user_name },
+          account: this.user_name },
 
         header: {
           'content-type': 'application/x-www-form-urlencoded' },
@@ -265,7 +256,6 @@ var _vuex = __webpack_require__(/*! vuex */ 8);var tTable = function tTable() {_
         } });
 
     } },
-
 
   onLoad: function onLoad() {
     if (!this.hasLogin) {

@@ -5,7 +5,7 @@
 				<uni-list-item title="产品名称" show-arrow="false" class="list-shu-style"></uni-list-item>
 				<uni-list-item style="font-size: 14px;">{{detail.name}}</uni-list-item>
 
-				<uni-list-item title="申购金额" show-arrow="false" class="list-shu-style"></uni-list-item>
+				<uni-list-item title="申购金额（万）" show-arrow="false" class="list-shu-style"></uni-list-item>
 				<uni-list-item style="font-size: 14px;">{{detail.money}}</uni-list-item>
 
 				<uni-list-item title="产品期限" show-arrow="false" class="list-shu-style"></uni-list-item>
